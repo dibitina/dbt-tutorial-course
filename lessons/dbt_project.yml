@@ -34,3 +34,6 @@ models:
   lessons:
     +materialized: table # create tables by default,
     # "+" = unless stated otherwise using the `{{ config(...) }}` macro
+    +persist_docs: # writes all of our column description into BigQuery:
+      relation: true
+      columns: true
