@@ -1,4 +1,5 @@
--- pasted the results of the
+-- pasted the results of the generate_base_model macro:
+-- dbt run-operation generate_base_model --args '{"source_name": "thelook_ecommerce", "table_name": "orders"}'
 
 WITH source AS (
     SELECT *
@@ -6,14 +7,23 @@ WITH source AS (
 )
 
 SELECT
+    --IDs
     order_id,
     user_id,
-    status,
-    gender,
+
+    --Timestamps
     created_at,
     returned_at,
     shipped_at,
     delivered_at,
-    num_of_item
+
+    --Other columns
+    status,
+    num_of_item AS num_items_ordered
+
+    {#- Unused columns:
+	    - gender
+	#}
+
 
 FROM source

@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_ecommerce__products
+    description: "Catalog of products in an online store"
+    columns:
+      - name: product_id # PK
+        tests:
+          - not_null
+          - unique
+
+      - name: cost
+        description: "How much the product cost the business to purchase"
+        tests:
+          - not_null
+
+      - name: retail_price
+        description: "How much the product retails for in an online store"
+        tests:
+          - not_null
+
+      - name: department
+        description: "Whether the item is Menswear or Womenswear"
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_department
+              values:
+                - Men
+                - Women
