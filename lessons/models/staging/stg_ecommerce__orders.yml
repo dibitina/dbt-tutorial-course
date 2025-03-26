@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  # theoretically, can add another model here:
+  # - name: stg_ecommerce__order_items
+  #   description: ...
+  - name: stg_ecommerce__orders
+    description: >
+      Table of one row per order.
+
+      BTW that's what the multi-line description looks like
+    columns:
+      - name: order_id # PK of the table. Should be non-null and unique
+        description: ""
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: ""
+
+      - name: status
+        description: ""
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_order_status
+              # We can name our tests to make it easier to give more meaningful errors
+              values:
+                - Processing
+                - Cancelled
+                - Shipped
+                - Complete
+                - Returned
+
+      - name: gender
+        description: ""
+      - name: created_at
+        description: ""
+      - name: returned_at
+        description: ""
+      - name: shipped_at
+        description: ""
+      - name: delivered_at
+        description: ""
+      - name: num_of_item
+        description: ""

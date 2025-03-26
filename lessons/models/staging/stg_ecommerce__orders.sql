@@ -6,7 +6,6 @@ WITH source AS (
 )
 
 SELECT
-
     order_id,
     user_id,
     status,
