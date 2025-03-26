@@ -1,0 +1,24 @@
+# this is the source file we're creating. It specifies the "place" where to look for the source data
+# (be it BQ/Snowflake/...)
+version: 2
+# why do models and source yml models always start with `version: 2`? https://docs.getdbt.com/faqs/project/why-version-2
+
+# name - key
+# the object type is a list, each list element written with the - bullet tick
+sources:
+
+  # name of the dataset I'm using
+  - name: thelook_ecommerce
+    # attributes of the object! not list elements, but just properties
+    # database <> project are interchangable in dbt-bigquery. but project is a BQ-specific name,
+    # whereas database is more general (e.g.)
+    database: bigquery-public-data
+    # copied all the table names from the BQ dataset
+    tables:
+      #- name: distribution_centers
+      #- name: events
+      - name: inventory_items
+      - name: order_items
+      - name: orders
+      - name: products
+      - name: users
