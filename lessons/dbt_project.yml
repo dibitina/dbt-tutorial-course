@@ -37,3 +37,8 @@ models:
     +persist_docs: # writes all of our column description into BigQuery:
       relation: true
       columns: true
+    +hours_to_expiration: 168 # 168 hours (7 days) after creation
+
+tests:
+  lessons:
+    +severity: warn # all tests are configured as warnings by default

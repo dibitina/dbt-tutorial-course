@@ -12,8 +12,8 @@ models:
     columns:
       - name: order_id # PK of the table. Should be non-null and unique
         tests:
-          - not_null
-          - unique
+          - primary_key:
+              severity: error
 
       - name: user_id
         tests:
@@ -30,18 +30,27 @@ models:
           # want it to be non-null in case the order WAS returned
           - not_null:
               where: "status = 'Returned'"
+          - dbt_utils.expression_is_true:
+              expression: ">= shipped_at"
+              where: "delivered_at IS NOT NULL AND shipped_at IS NOT NULL"
 
       - name: shipped_at
         description: "Timestamp of when the order was shipped"
         tests:
           - not_null:
               where: "status = 'Shipped' OR delivered_at IS NOT NULL"
+          - dbt_utils.expression_is_true:
+              expression: ">= created_at"
+              where: "shipped_at IS NOT NULL"
 
       - name: delivered_at
         description: "Timestamp of when the order was delivered"
         tests:
           - not_null:
               where: "status = 'Complete' OR returned_at IS NOT NULL"
+          - dbt_utils.expression_is_true:
+              expression: ">= shipped_at"
+              where: "delivered_at IS NOT NULL AND shipped_at IS NOT NULL"
 
       - name: status
         description: ""
@@ -62,3 +71,5 @@ models:
         description: "Number of items in the order"
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0

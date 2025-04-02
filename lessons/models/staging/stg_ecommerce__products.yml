@@ -4,20 +4,31 @@ models:
   - name: stg_ecommerce__products
     description: "Catalog of products in an online store"
     columns:
-      - name: product_id # PK
+      - name: product_id # PK - it's a severity: error if it is null or a duplicate.
         tests:
-          - not_null
-          - unique
+          - primary_key:
+              severity: error
+              # you can also add "- where:" clauses here
 
       - name: cost
         description: "How much the product cost the business to purchase"
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              severity: error
 
       - name: retail_price
         description: "How much the product retails for in an online store"
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+          - dbt_utils.expression_is_true:
+              name: retail_price_greater_than_cost
+              expression: ">= cost"
+              # where: "retail_price IS NOT NULL"
+              # don't need it - just like in vanilla sql because of the NULL properties (see generated sql for the test)
 
       - name: department
         description: "Whether the item is Menswear or Womenswear"
@@ -28,3 +39,9 @@ models:
               values:
                 - Men
                 - Women
+              # quote defaults to true, but this just shows how you could set it to
+              # false if you wanted to have non-string values (e.g. numbers or a TRUE/FALSE column)
+              quote: true
+              severity: error
+              warn_if: ">1"
+              error_if: ">2"
