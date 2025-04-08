@@ -13,7 +13,7 @@ SELECT
     -- Other columns
     sale_price AS item_sale_price
 
-	{#- Unused columns:
+	{#- Unused columns: 
 		- inventory_item_id
 
 		For the below, we assume that all of these will be the same
